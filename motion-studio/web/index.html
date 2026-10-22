@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Motion Studio · vídeos faceless</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="top">
+    <div>
+      <h1>Motion Studio</h1>
+      <p class="sub">Audio → transcripción con tiempos → escenas de motion graphics sincronizadas → MP4 listo para YouTube</p>
+    </div>
+    <div id="meta" class="meta"></div>
+  </header>
+
+  <div id="banner" class="banner hidden"></div>
+
+  <main class="layout">
+    <aside class="col-side">
+      <section class="card">
+        <h2>1 · Nuevo proyecto</h2>
+        <form id="new-form">
+          <label>Nombre<input name="name" placeholder="Ej. 5 mitos del cerebro" /></label>
+          <label>Audio de la narración
+            <input type="file" name="audio" accept="audio/*,video/*" />
+          </label>
+          <label>o importa una transcripción <span class="hint">(.json con tiempos, .srt, .vtt)</span>
+            <input type="file" name="transcript" accept=".json,.srt,.vtt" />
+          </label>
+          <div class="row">
+            <label>Idioma
+              <select name="language" id="language"></select>
+            </label>
+            <label>Whisper
+              <select name="whisper_model" id="whisper_model"></select>
+            </label>
+          </div>
+          <label>Planificador de escenas
+            <select name="planner" id="planner">
+              <option value="heuristic">Heurística (sin LLM)</option>
+              <option value="llm">LLM (requiere configuración)</option>
+            </select>
+          </label>
+          <p class="hint" id="llm-hint"></p>
+          <button type="submit" class="primary" id="btn-analyze">Transcribir y crear escenas</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Proyectos</h2>
+        <ul id="projects" class="projects"></ul>
+      </section>
+    </aside>
+
+    <section class="col-main">
+      <section class="card hidden" id="progress-card">
+        <h2>Progreso</h2>
+        <div class="progress"><div id="progress-bar"></div></div>
+        <p id="progress-text" class="hint"></p>
+      </section>
+
+      <section class="card hidden" id="project-card">
+        <h2 id="project-title">Proyecto</h2>
+        <p class="hint" id="project-info"></p>
+        <details>
+          <summary>Transcripción completa</summary>
+          <div id="transcript" class="transcript"></div>
+        </details>
+      </section>
+
+      <section class="card hidden" id="scenes-card">
+        <h2>2 · Escenas de motion graphics</h2>
+        <p class="hint">Cada escena aparece en el instante exacto en que se dice su texto. Puedes cambiar el tipo visual o las palabras resaltadas; los tiempos no cambian.</p>
+        <div class="table-wrap">
+          <table id="scenes">
+            <thead><tr><th>#</th><th>Tiempo</th><th>Tipo</th><th>Texto narrado</th><th>Resaltar</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="actions">
+          <button id="btn-save-plan">Guardar cambios de escenas</button>
+        </div>
+      </section>
+
+      <section class="card hidden" id="style-card">
+        <h2>3 · Estilo de motion graphics</h2>
+        <div id="styles" class="styles"></div>
+        <div class="row4">
+          <label>Formato
+            <select id="aspect"></select>
+          </label>
+          <label>Resolución
+            <select id="resolution"></select>
+          </label>
+          <label>FPS
+            <select id="fps"></select>
+          </label>
+          <label class="check"><input type="checkbox" id="captions" checked /> Subtítulos palabra a palabra</label>
+        </div>
+        <div class="actions">
+          <button class="primary" id="btn-render">Renderizar vídeo</button>
+        </div>
+      </section>
+
+      <section class="card hidden" id="output-card">
+        <h2>Vídeo</h2>
+        <video id="player" controls></video>
+        <div class="actions">
+          <a id="download" class="button" href="#" download>Descargar MP4</a>
+        </div>
+        <ul id="outputs" class="projects"></ul>
+      </section>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
